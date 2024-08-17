@@ -4,6 +4,8 @@
 
 1. 計算タイプについてコンポーネントを分けた
 2. ヘッダー、フッターを追加
+3. Vercelでデプロイできず。下記削除。npm run dev終了。
+   import { text } from "aws-sdk/clients/customerprofiles";
 
 ## 2024/8/17
 

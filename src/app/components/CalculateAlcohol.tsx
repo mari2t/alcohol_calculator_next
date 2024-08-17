@@ -1,5 +1,4 @@
 "use client";
-import { text } from "aws-sdk/clients/customerprofiles";
 import React from "react";
 
 type CalculateAlcoholProps = {
