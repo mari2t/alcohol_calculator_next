@@ -29,16 +29,16 @@ const AlcoholCalculator = () => {
   };
 
   return (
-    <div className="p-8 bg-white rounded-lg shadow-lg max-w-lg mx-auto">
-      <h1 className="text-2xl font-bold mb-6 text-center text-gray-800">
+    <div className="p-8 bg-blue-50 rounded-lg shadow-lg max-w-lg mx-auto">
+      <h1 className="text-3xl font-bold mb-6 text-center text-blue-900">
         Alcohol Calculator
       </h1>
       <div className="mb-6 text-center">
         <button
           className={`px-6 py-2 rounded-full mr-2 ${
             calculationType === "type1"
-              ? "bg-blue-500 text-white"
-              : "bg-gray-200 text-gray-800"
+              ? "bg-blue-600 text-white"
+              : "bg-blue-200 text-blue-900"
           }`}
           onClick={() => setCalculationType("type1")}
         >
@@ -47,8 +47,8 @@ const AlcoholCalculator = () => {
         <button
           className={`px-6 py-2 rounded-full ${
             calculationType === "type2"
-              ? "bg-blue-500 text-white"
-              : "bg-gray-200 text-gray-800"
+              ? "bg-blue-600 text-white"
+              : "bg-blue-200 text-blue-900"
           }`}
           onClick={() => setCalculationType("type2")}
         >
@@ -58,7 +58,7 @@ const AlcoholCalculator = () => {
 
       {calculationType === "type1" ? (
         <div>
-          <h2 className="text-lg font-semibold mb-4 text-gray-700">
+          <h2 className="text-lg font-semibold mb-4 text-blue-800">
             飲んだ量とアルコール度数を入力してください:
           </h2>
           {volumes.map((volume, index) => (
@@ -74,7 +74,7 @@ const AlcoholCalculator = () => {
                 }}
                 className="border p-2 mr-2 w-24 rounded"
               />
-              <span className="mr-4 text-gray-600">ml</span>
+              <span className="mr-4 text-blue-700">ml</span>
               <input
                 type="number"
                 placeholder={`Percentage (%) ${index + 1}`}
@@ -86,18 +86,18 @@ const AlcoholCalculator = () => {
                 }}
                 className="border p-2 mr-2 w-24 rounded"
               />
-              <span className="text-gray-600">%</span>
+              <span className="text-blue-700">%</span>
             </div>
           ))}
           <div className="mt-6 text-center">
-            <p className="text-xl font-semibold text-gray-800">
+            <p className="text-xl font-semibold text-blue-900">
               Total Alcohol Amount: {calculateAlcoholAmount()} ml
             </p>
           </div>
         </div>
       ) : (
         <div>
-          <h2 className="text-lg font-semibold mb-4 text-gray-700">
+          <h2 className="text-lg font-semibold mb-4 text-blue-800">
             目標アルコール量を入力してください:
           </h2>
           <div className="flex items-center mb-6">
@@ -108,13 +108,13 @@ const AlcoholCalculator = () => {
               onChange={(e) => setTargetAlcohol(parseFloat(e.target.value))}
               className="border p-2 w-24 rounded mr-2"
             />
-            <span className="text-gray-600">ml</span>
+            <span className="text-blue-700">ml</span>
           </div>
           <div className="mt-4">
-            <h3 className="text-lg font-semibold text-gray-700">Results:</h3>
+            <h3 className="text-lg font-semibold text-blue-800">Results:</h3>
             <ul className="mt-2">
               {calculateVolumesForTargetAlcohol().map((result, index) => (
-                <li key={index} className="mb-1 text-gray-700">
+                <li key={index} className="mb-1 text-blue-800">
                   {result.percentage}%: {result.volume} ml
                 </li>
               ))}
