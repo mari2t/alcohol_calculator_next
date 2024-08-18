@@ -16,7 +16,7 @@ This is an alcohol calculator.
 
 ## Creation Date
 
-2024/8/16-
+2024/8/16 - 2024/8/18
 
 ## Log
 
