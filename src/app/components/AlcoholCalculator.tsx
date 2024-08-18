@@ -5,7 +5,10 @@ import CalculateAmount from "./CalculateAmount";
 import CalculateRemaining from "./CalculateRemaining";
 
 type CalculationType = "type1" | "type2" | "type3";
-const ALCOHOL_COEFFICIENT = 0.8; // アルコール係数を定数として定義
+
+// 定数定義
+const ALCOHOL_COEFFICIENT = 0.8;
+const ShowAlcoholPercentages = [3, 4, 5, 6, 7, 9, 12, 15, 25, 40];
 
 const AlcoholCalculator = () => {
   const [calculationType, setCalculationType] =
@@ -17,6 +20,8 @@ const AlcoholCalculator = () => {
   const [targetAlcohol, setTargetAlcohol] = useState<number>(0);
   const [limitAlcohol, setLimitAlcohol] = useState<number>(0);
   const [resultMessage, setResultMessage] = useState<string>("");
+  const [showAmountResults, setShowAmountResults] = useState(false);
+  const [showRemainingResults, setShowRemainingResults] = useState(false);
 
   const calculateAlcoholAmount = (): number => {
     return parseFloat(
@@ -35,10 +40,14 @@ const AlcoholCalculator = () => {
     volume: string;
   }[] => {
     const results = [];
-    for (let i = 3; i <= 12; i++) {
+    for (const percentage of ShowAlcoholPercentages) {
       results.push({
-        percentage: i,
-        volume: (targetAlcohol / (i / 100) / ALCOHOL_COEFFICIENT).toFixed(0),
+        percentage: percentage,
+        volume: (
+          targetAlcohol /
+          (percentage / 100) /
+          ALCOHOL_COEFFICIENT
+        ).toFixed(0),
       });
     }
     return results;
@@ -55,13 +64,28 @@ const AlcoholCalculator = () => {
   }[] => {
     const remainingAlcohol = calculateRemainingAlcohol();
     const results = [];
-    for (let i = 3; i <= 12; i++) {
+    for (const percentage of ShowAlcoholPercentages) {
       results.push({
-        percentage: i,
-        volume: (remainingAlcohol / (i / 100) / ALCOHOL_COEFFICIENT).toFixed(0),
+        percentage: percentage,
+        volume: (
+          remainingAlcohol /
+          (percentage / 100) /
+          ALCOHOL_COEFFICIENT
+        ).toFixed(0),
       });
     }
     return results;
+  };
+
+  // 全てのステートをリセットする関数
+  const resetAllValues = () => {
+    setVolumes(new Array(5).fill(0));
+    setPercentages(new Array(5).fill(0));
+    setTargetAlcohol(0);
+    setLimitAlcohol(0);
+    setResultMessage("");
+    setShowAmountResults(false);
+    setShowRemainingResults(false);
   };
 
   return (
@@ -104,17 +128,23 @@ const AlcoholCalculator = () => {
           volumes={volumes}
           percentages={percentages}
           resultMessage={resultMessage}
+          ShowAlcoholPercentages={ShowAlcoholPercentages}
           setVolumes={setVolumes}
           setPercentages={setPercentages}
           setResultMessage={setResultMessage}
           calculateAlcoholAmount={calculateAlcoholAmount}
+          resetAll={resetAllValues}
         />
       )}
       {calculationType === "type2" && (
         <CalculateAmount
           targetAlcohol={targetAlcohol}
+          showAmountResults={showAmountResults}
+          ShowAlcoholPercentages={ShowAlcoholPercentages}
+          setShowAmountResults={setShowAmountResults}
           setTargetAlcohol={setTargetAlcohol}
           calculateVolumesForTargetAlcohol={calculateVolumesForTargetAlcohol}
+          resetAll={resetAllValues}
         />
       )}
       {calculationType === "type3" && (
@@ -122,10 +152,16 @@ const AlcoholCalculator = () => {
           volumes={volumes}
           percentages={percentages}
           limitAlcohol={limitAlcohol}
+          ShowAlcoholPercentages={ShowAlcoholPercentages}
+          showRemainingResults={showRemainingResults}
+          setVolumes={setVolumes}
+          setPercentages={setPercentages}
           setLimitAlcohol={setLimitAlcohol}
           calculateAlcoholAmount={calculateAlcoholAmount}
           calculateRemainingAlcohol={calculateRemainingAlcohol}
           calculateAdditionalVolumes={calculateAdditionalVolumes}
+          setShowRemainingResults={setShowRemainingResults}
+          resetAll={resetAllValues}
         />
       )}
     </div>

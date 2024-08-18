@@ -5,20 +5,24 @@ type CalculateAlcoholProps = {
   volumes: number[];
   percentages: number[];
   resultMessage: string;
+  ShowAlcoholPercentages: number[];
   setVolumes: (volumes: number[]) => void;
   setPercentages: (percentages: number[]) => void;
   setResultMessage: (message: string) => void;
   calculateAlcoholAmount: () => number;
+  resetAll: () => void;
 };
 
 const CalculateAlcohol: React.FC<CalculateAlcoholProps> = ({
   volumes,
   percentages,
   resultMessage,
+  ShowAlcoholPercentages,
   setVolumes,
   setPercentages,
   setResultMessage,
   calculateAlcoholAmount,
+  resetAll,
 }) => {
   return (
     <div>
@@ -38,7 +42,7 @@ const CalculateAlcohol: React.FC<CalculateAlcoholProps> = ({
             className="border p-2 mr-2 w-24 rounded"
           >
             <option value="">-選択-</option>
-            {[3, 4, 5, 6, 7, 9, 12, 15, 25, 40].map((percentage) => (
+            {ShowAlcoholPercentages.map((percentage) => (
               <option key={percentage} value={percentage}>
                 {percentage}%
               </option>
@@ -75,13 +79,19 @@ const CalculateAlcohol: React.FC<CalculateAlcoholProps> = ({
       ))}
       <div className="mt-6 text-center">
         <button
-          className="px-6 py-2 rounded bg-blue-600 text-white font-semibold"
+          className="px-6 py-2 rounded bg-blue-600 text-white font-semibold mr-4 shadow-md transition duration-300 ease-in-out transform hover:scale-105 hover:bg-blue-300 hover:text-blue-900"
           onClick={() => {
             const totalAlcohol = calculateAlcoholAmount();
             setResultMessage(`総アルコール量: ${totalAlcohol.toFixed(1)} g`);
           }}
         >
           計算する
+        </button>
+        <button
+          className="px-6 py-2 rounded bg-gray-200 text-blue-600 font-semibold shadow-md transition duration-300 ease-in-out transform hover:scale-105 hover:bg-blue-300 hover:text-blue-900"
+          onClick={resetAll}
+        >
+          リセット
         </button>
       </div>
       {resultMessage && (

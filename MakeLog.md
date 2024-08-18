@@ -4,8 +4,11 @@
 
 1. 計算タイプについてコンポーネントを分けた
 2. ヘッダー、フッターを追加
-3. Vercelでデプロイできず。下記削除。npm run dev終了。
+3. Vercelでデプロイできず。下記削除。npm run dev終了。  
    import { text } from "aws-sdk/clients/customerprofiles";
+4. 問題：CalculateRemainingの画面の選択肢を選択できない。
+5. 解決：原因はsetPercentages、setVolumesをpropsで渡していないことだった。
+6. 計算するボタン、リセットボタンを追加。
 
 ## 2024/8/17
 
