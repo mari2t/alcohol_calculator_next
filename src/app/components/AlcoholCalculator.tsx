@@ -3,8 +3,9 @@ import React, { useState } from "react";
 import CalculateAlcohol from "./CalculateAlcohol";
 import CalculateAmount from "./CalculateAmount";
 import CalculateRemaining from "./CalculateRemaining";
+import RecordAlcoholAmount from "./RecordAlcoholAmount";
 
-type CalculationType = "type1" | "type2" | "type3";
+type CalculationType = "type1" | "type2" | "type3" | "type4";
 type RiskLevels = {
   [key: string]: { male: number; female: number };
 };
@@ -39,6 +40,12 @@ const AlcoholCalculator = () => {
     male: [],
     female: [],
   });
+  const [drinkNames, setDrinkNames] = useState<string[]>(
+    new Array(volumes.length).fill("")
+  );
+  const [notes, setNotes] = useState<string[]>(
+    new Array(volumes.length).fill("")
+  );
 
   const calculateAlcoholAmount = (): number => {
     return parseFloat(
@@ -64,7 +71,7 @@ const AlcoholCalculator = () => {
           targetAlcohol /
           (percentage / 100) /
           ALCOHOL_COEFFICIENT
-        ).toFixed(0),
+        ).toFixed(1),
       });
     }
     return results;
@@ -88,7 +95,7 @@ const AlcoholCalculator = () => {
           remainingAlcohol /
           (percentage / 100) /
           ALCOHOL_COEFFICIENT
-        ).toFixed(0),
+        ).toFixed(1),
       });
     }
     return results;
@@ -117,41 +124,29 @@ const AlcoholCalculator = () => {
     setShowAmountResults(false);
     setShowRemainingResults(false);
     setRiskResults({ male: [], female: [] });
+    setDrinkNames([]);
+    setNotes([]);
   };
 
   return (
-    <div className="p-8 bg-blue-50 rounded-lg shadow-lg max-w-lg mx-auto">
-      <div className="flex flex-col md:flex-row items-center space-y-4 md:space-y-0 md:space-x-4 mb-6">
-        <button
-          className={`w-64 px-6 py-3 rounded-full shadow-lg transition duration-300 ease-in-out transform hover:scale-105 ${
-            calculationType === "type1"
-              ? "bg-blue-600 text-white hover:bg-blue-700"
-              : "bg-blue-200 text-blue-900 hover:bg-blue-300"
-          }`}
-          onClick={() => setCalculationType("type1")}
-        >
-          飲酒量からアルコール量を計算する
-        </button>
-        <button
-          className={`w-64 px-6 py-3 rounded-full shadow-lg transition duration-300 ease-in-out transform hover:scale-105 ${
-            calculationType === "type2"
-              ? "bg-blue-600 text-white hover:bg-blue-700"
-              : "bg-blue-200 text-blue-900 hover:bg-blue-300"
-          }`}
-          onClick={() => setCalculationType("type2")}
-        >
-          アルコール量から飲める量を計算する
-        </button>
-        <button
-          className={`w-64 px-6 py-3 rounded-full shadow-lg transition duration-300 ease-in-out transform hover:scale-105 ${
-            calculationType === "type3"
-              ? "bg-blue-600 text-white hover:bg-blue-700"
-              : "bg-blue-200 text-blue-900 hover:bg-blue-300"
-          }`}
-          onClick={() => setCalculationType("type3")}
-        >
-          あとどれくらい飲めるか計算する
-        </button>
+    <div className="p-8 bg-blue-50 rounded-lg shadow-lg max-w-4xl mx-auto">
+      <div className="flex flex-col md:flex-row items-center md:justify-between space-y-4 md:space-y-0 mb-6 w-full">
+        {["type1", "type2", "type3", "type4"].map((type, index) => (
+          <button
+            key={index}
+            className={`flex-grow-0 flex-shrink-0 basis-1/5 px-6 py-3 mx-2 rounded-full shadow-lg transition duration-300 ease-in-out transform hover:scale-105 ${
+              calculationType === type
+                ? "bg-blue-600 text-white hover:bg-blue-700"
+                : "bg-blue-200 text-blue-900 hover:bg-blue-300"
+            }`}
+            onClick={() => setCalculationType(type as CalculationType)}
+          >
+            {type === "type1" && "飲酒量からアルコール量を計算する"}
+            {type === "type2" && "アルコール量から飲める量を計算する"}
+            {type === "type3" && "あとどれくらい飲めるか計算する"}
+            {type === "type4" && "飲酒量とアルコール量のメモをとる"}
+          </button>
+        ))}
       </div>
 
       {calculationType === "type1" && (
@@ -196,6 +191,25 @@ const AlcoholCalculator = () => {
           calculateRemainingAlcohol={calculateRemainingAlcohol}
           calculateAdditionalVolumes={calculateAdditionalVolumes}
           setShowRemainingResults={setShowRemainingResults}
+          resetAll={resetAllValues}
+        />
+      )}
+      {calculationType === "type4" && (
+        <RecordAlcoholAmount
+          volumes={volumes}
+          percentages={percentages}
+          limitAlcohol={limitAlcohol}
+          ShowAlcoholPercentages={ShowAlcoholPercentages}
+          showRemainingResults={showRemainingResults}
+          drinkNames={drinkNames}
+          notes={notes}
+          setVolumes={setVolumes}
+          setPercentages={setPercentages}
+          setLimitAlcohol={setLimitAlcohol}
+          calculateAlcoholAmount={calculateAlcoholAmount}
+          setShowRemainingResults={setShowRemainingResults}
+          setDrinkNames={setDrinkNames}
+          setNotes={setNotes}
           resetAll={resetAllValues}
         />
       )}

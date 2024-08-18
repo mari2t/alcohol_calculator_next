@@ -1,44 +1,53 @@
 "use client";
-import React from "react";
+import React, { useEffect } from "react";
 
-type CalculateRemainingProps = {
+type RecordAlcoholAmountProps = {
   volumes: number[];
   percentages: number[];
   limitAlcohol: number;
   ShowAlcoholPercentages: number[];
+  drinkNames: string[];
+  notes: string[];
   setVolumes: (volumes: number[]) => void;
   setPercentages: (percentages: number[]) => void;
+  setDrinkNames: (drinkNames: string[]) => void;
+  setNotes: (notes: string[]) => void;
   setLimitAlcohol: (value: number) => void;
   calculateAlcoholAmount: () => number;
-  calculateRemainingAlcohol: () => number;
-  calculateAdditionalVolumes: () => Array<{
-    percentage: number;
-    volume: string;
-  }>;
   showRemainingResults: boolean;
   setShowRemainingResults: (value: boolean) => void;
   resetAll: () => void;
 };
 
-const CalculateRemaining: React.FC<CalculateRemainingProps> = ({
+const RecordAlcoholAmount: React.FC<RecordAlcoholAmountProps> = ({
   volumes,
   percentages,
   limitAlcohol,
+  drinkNames,
+  notes,
   ShowAlcoholPercentages,
   showRemainingResults,
   setVolumes,
   setPercentages,
+  setDrinkNames,
+  setNotes,
   setLimitAlcohol,
   calculateAlcoholAmount,
-  calculateRemainingAlcohol,
-  calculateAdditionalVolumes,
   setShowRemainingResults,
   resetAll,
 }) => {
+  useEffect(() => {
+    // リセット後にプレースホルダーが確実に表示されるように状態を監視
+  }, [drinkNames, notes, volumes, percentages, limitAlcohol]);
   const handleCalculate = () => {
     if (limitAlcohol === 0) {
       alert("制限アルコール量を入力してください");
     } else {
+      const totalAlcohol = calculateAlcoholAmount();
+      const consumptionPercentage = (
+        (totalAlcohol / limitAlcohol) *
+        100
+      ).toFixed(1);
       setShowRemainingResults(true);
     }
   };
@@ -51,6 +60,17 @@ const CalculateRemaining: React.FC<CalculateRemainingProps> = ({
         </h2>
         {volumes.map((volume, index) => (
           <div key={index} className="mb-4 flex items-center">
+            <input
+              type="text"
+              placeholder="酒名"
+              value={drinkNames[index] || ""}
+              onChange={(e) => {
+                const newDrinkNames = [...drinkNames];
+                newDrinkNames[index] = e.target.value;
+                setDrinkNames(newDrinkNames);
+              }}
+              className="border p-2 mr-2 w-48 rounded"
+            />
             <span className="text-blue-700">アルコール度数</span>
             <select
               value={percentages[index]}
@@ -94,7 +114,17 @@ const CalculateRemaining: React.FC<CalculateRemainingProps> = ({
                       )
                     ))}
             </select>
-            <span className="mr-4 text-blue-700">ml</span>
+            <input
+              type="text"
+              placeholder="備考"
+              value={notes[index] || ""}
+              onChange={(e) => {
+                const newNotes = [...notes];
+                newNotes[index] = e.target.value;
+                setNotes(newNotes);
+              }}
+              className="border p-2 ml-2 w-48 rounded"
+            />
           </div>
         ))}
         <h2 className="text-lg font-semibold mb-4 text-blue-800">
@@ -124,56 +154,46 @@ const CalculateRemaining: React.FC<CalculateRemainingProps> = ({
         </div>
         {showRemainingResults && (
           <div className="mt-6">
-            <p className="text-xl font-semibold text-blue-900">
+            <span className="text-xl font-semibold text-blue-900">
               摂取アルコール量…　{calculateAlcoholAmount()} g
-            </p>
-            <p className="text-xl font-semibold text-blue-900">
-              制限アルコール量まであと…　{calculateRemainingAlcohol()} g
-            </p>
+              <br />
+            </span>
+            <span className="text-xl font-semibold text-blue-900">
+              制限アルコール量…　{limitAlcohol} g
+              <br />
+            </span>
+            <span className="text-xl font-semibold text-blue-900">
+              制限に対する摂取アルコールの割合…　
+              {((calculateAlcoholAmount() / limitAlcohol) * 100).toFixed(1)}%
+              <br />
+            </span>
+            {showRemainingResults && (
+              <div className="mt-6">
+                {volumes.map(
+                  (volume, index) =>
+                    percentages[index] !== 0 &&
+                    volume !== 0 && (
+                      <span key={index} className="text-xl text-blue-900">
+                        <span className="font-bold">
+                          アルコール{index + 1}本目:
+                        </span>
+                        <span className="font-bold">　</span>{" "}
+                        {drinkNames[index]}
+                        <span className="font-bold">　</span>{" "}
+                        {percentages[index]}%
+                        <span className="font-bold">　</span> {volume} ml
+                        <span className="font-bold">　</span> {notes[index]}
+                        <br />
+                      </span>
+                    )
+                )}
+              </div>
+            )}
           </div>
         )}
-
-        {showRemainingResults ? (
-          calculateRemainingAlcohol() > 0.4 ? (
-            <div className="mt-4">
-              <h3 className="text-lg font-semibold text-blue-800">
-                あと飲めるの量は…
-              </h3>
-              <div className="mt-4 overflow-x-auto">
-                <table className="min-w-full table-auto">
-                  <thead>
-                    <tr className="bg-blue-500 text-white">
-                      <th className="px-4 py-2">アルコール度数 (%)</th>
-                      <th className="px-4 py-2">飲める量 (ml)</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {calculateAdditionalVolumes().map((result, index) => (
-                      <tr
-                        key={index}
-                        className={`${
-                          index % 2 === 0 ? "bg-blue-100" : "bg-white"
-                        }`}
-                      >
-                        <td className="border px-4 py-2 text-center text-blue-800">
-                          {result.percentage}%
-                        </td>
-                        <td className="border px-4 py-2 text-center text-blue-800">
-                          {result.volume} ml
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-            </div>
-          ) : (
-            <p className="text-lg text-red-600">もう飲めません！</p>
-          )
-        ) : null}
       </div>
     </div>
   );
 };
 
-export default CalculateRemaining;
+export default RecordAlcoholAmount;
