@@ -132,25 +132,44 @@ const CalculateRemaining: React.FC<CalculateRemainingProps> = ({
         </div>
       )}
 
-      <div className="mt-4">
-        <h3 className="text-lg font-semibold text-blue-800">
-          あと飲めるのは量は…
-        </h3>
-        {showRemainingResults ? (
-          calculateRemainingAlcohol() >= 0 ? (
-            <ul className="mt-2">
-              {calculateAdditionalVolumes().map((result, index) => (
-                <li key={index} className="mb-1 text-blue-800">
-                  アルコール度数：　{result.percentage}%　 なら飲める量は：
-                  {result.volume} ml
-                </li>
-              ))}
-            </ul>
-          ) : (
-            <p className="text-lg text-red-600">もう飲めません！</p>
-          )
-        ) : null}
-      </div>
+      {showRemainingResults ? (
+        calculateRemainingAlcohol() >= 0 ? (
+          <div className="mt-4">
+            <h3 className="text-lg font-semibold text-blue-800">
+              あと飲めるのは量は…
+            </h3>
+            <div className="mt-4 overflow-x-auto">
+              <table className="min-w-full table-auto">
+                <thead>
+                  <tr className="bg-blue-500 text-white">
+                    <th className="px-4 py-2">アルコール度数 (%)</th>
+                    <th className="px-4 py-2">飲める量 (ml)</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {calculateAdditionalVolumes().map((result, index) => (
+                    <tr
+                      key={index}
+                      className={`${
+                        index % 2 === 0 ? "bg-blue-100" : "bg-white"
+                      }`}
+                    >
+                      <td className="border px-4 py-2 text-center  text-blue-800">
+                        {result.percentage}%
+                      </td>
+                      <td className="border px-4 py-2 text-center  text-blue-800">
+                        {result.volume} ml
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>{" "}
+          </div>
+        ) : (
+          <p className="text-lg text-red-600">もう飲めません！</p>
+        )
+      ) : null}
     </div>
   );
 };
