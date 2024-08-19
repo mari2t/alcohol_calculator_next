@@ -53,25 +53,28 @@ const RecordAlcoholAmount: React.FC<RecordAlcoholAmountProps> = ({
   };
 
   return (
-    <div className="flex flex-col items-center justify-center">
-      <div className="">
-        <h2 className="text-lg font-semibold mb-4 text-blue-800">
+    <div className="flex flex-col items-center justify-center px-4 sm:px-6 lg:px-8">
+      <div className="w-full max-w-3xl">
+        <h2 className="text-lg sm:text-xl font-semibold mb-4 text-blue-800">
           アルコール度数、飲酒量を入力してください:
         </h2>
         {volumes.map((volume, index) => (
-          <div key={index} className="mb-4 flex items-center">
+          <div
+            key={index}
+            className="mb-4 flex flex-col sm:flex-row items-center mt-10 border border-gray-300 p-4 rounded-lg"
+          >
             <input
               type="text"
-              placeholder="酒名"
+              placeholder={`アルコール${index + 1}本目　名前`}
               value={drinkNames[index] || ""}
               onChange={(e) => {
                 const newDrinkNames = [...drinkNames];
                 newDrinkNames[index] = e.target.value;
                 setDrinkNames(newDrinkNames);
               }}
-              className="border p-2 mr-2 w-48 rounded"
+              className="border p-2 mb-2 sm:mb-0 sm:mr-2 w-full sm:w-48 rounded"
             />
-            <span className="text-blue-700">アルコール度数</span>
+            <span className="text-blue-700 mr-2">アルコール度数</span>
             <select
               value={percentages[index]}
               onChange={(e) => {
@@ -79,7 +82,7 @@ const RecordAlcoholAmount: React.FC<RecordAlcoholAmountProps> = ({
                 newPercentages[index] = parseFloat(e.target.value);
                 setPercentages(newPercentages);
               }}
-              className="border p-2 mr-2 w-24 rounded"
+              className="border p-2 mb-2 sm:mb-0 sm:mr-2 w-full sm:w-24 rounded"
             >
               <option value="">-選択-</option>
               {ShowAlcoholPercentages.map((percentage) => (
@@ -88,7 +91,7 @@ const RecordAlcoholAmount: React.FC<RecordAlcoholAmountProps> = ({
                 </option>
               ))}
             </select>
-            <span className="text-blue-700">飲酒量</span>
+            <span className="text-blue-700 mr-2">飲酒量</span>
             <select
               value={volume}
               onChange={(e) => {
@@ -96,7 +99,7 @@ const RecordAlcoholAmount: React.FC<RecordAlcoholAmountProps> = ({
                 newVolumes[index] = parseFloat(e.target.value);
                 setVolumes(newVolumes);
               }}
-              className="border p-2 mr-2 w-24 rounded"
+              className="border p-2 mb-2 sm:mb-0 sm:mr-2 w-full sm:w-24 rounded"
             >
               <option value="">-選択-</option>
               {percentages[index] &&
@@ -123,21 +126,23 @@ const RecordAlcoholAmount: React.FC<RecordAlcoholAmountProps> = ({
                 newNotes[index] = e.target.value;
                 setNotes(newNotes);
               }}
-              className="border p-2 ml-2 w-48 rounded"
+              className="border p-2 w-full sm:w-48 rounded"
             />
           </div>
         ))}
-        <h2 className="text-lg font-semibold mb-4 text-blue-800">
+        <h2 className="text-lg sm:text-xl font-semibold mb-4 text-blue-800">
           制限アルコール量を入力してください:
         </h2>
-        <input
-          type="number"
-          placeholder="Limit Alcohol Amount"
-          value={limitAlcohol}
-          onChange={(e) => setLimitAlcohol(parseFloat(e.target.value))}
-          className="border p-2 w-24 rounded mr-2"
-        />
-        <span className="text-blue-700">g</span>
+        <div className="flex items-center">
+          <input
+            type="number"
+            placeholder="Limit Alcohol Amount"
+            value={limitAlcohol}
+            onChange={(e) => setLimitAlcohol(parseFloat(e.target.value))}
+            className="border p-2 w-full sm:w-24 rounded mr-2"
+          />
+          <span className="text-blue-700">g</span>
+        </div>
         <div className="mt-6 text-center">
           <button
             onClick={handleCalculate}
@@ -164,31 +169,30 @@ const RecordAlcoholAmount: React.FC<RecordAlcoholAmountProps> = ({
             </span>
             <span className="text-xl font-semibold text-blue-900">
               制限に対する摂取アルコールの割合…　
-              {((calculateAlcoholAmount() / limitAlcohol) * 100).toFixed(1)}%
+              {((calculateAlcoholAmount() / limitAlcohol) * 100).toFixed(0)}%
               <br />
             </span>
-            {showRemainingResults && (
-              <div className="mt-6">
-                {volumes.map(
-                  (volume, index) =>
-                    percentages[index] !== 0 &&
-                    volume !== 0 && (
-                      <span key={index} className="text-xl text-blue-900">
-                        <span className="font-bold">
-                          アルコール{index + 1}本目:
-                        </span>
-                        <span className="font-bold">　</span>{" "}
-                        {drinkNames[index]}
-                        <span className="font-bold">　</span>{" "}
-                        {percentages[index]}%
-                        <span className="font-bold">　</span> {volume} ml
-                        <span className="font-bold">　</span> {notes[index]}
-                        <br />
+            <div className="mt-6">
+              {volumes.map(
+                (volume, index) =>
+                  percentages[index] !== 0 &&
+                  volume !== 0 && (
+                    <span
+                      key={index}
+                      className="text-xl text-blue-900 block sm:inline-block sm:mr-4"
+                    >
+                      <span className="font-bold">
+                        アルコール{index + 1}本目:
                       </span>
-                    )
-                )}
-              </div>
-            )}
+                      <span className="font-bold">　</span> {drinkNames[index]}
+                      <span className="font-bold">　</span> {percentages[index]}
+                      %<span className="font-bold">　</span> {volume} ml
+                      <span className="font-bold">　</span> {notes[index]}
+                      <br />
+                    </span>
+                  )
+              )}
+            </div>
           </div>
         )}
       </div>

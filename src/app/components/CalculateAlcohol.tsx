@@ -106,7 +106,7 @@ const CalculateAlcohol: React.FC<CalculateAlcoholProps> = ({
             onClick={() => {
               const totalAlcohol = calculateAlcoholAmount();
               setResultMessage(
-                `摂取総アルコール量: ${totalAlcohol.toFixed(1)} g`
+                `摂取アルコール量: ${totalAlcohol.toFixed(1)} g`
               );
               handleCalculate();
             }}
@@ -180,7 +180,7 @@ const CalculateAlcohol: React.FC<CalculateAlcoholProps> = ({
               </tbody>
             </table>
             <p className="mt-4 text-xl font-semibold text-gray-900 text-center">
-              参考
+              参考　リスクの高いアルコール量
             </p>
             <div className="mt-6">
               <table className="min-w-full table-auto">

@@ -2,8 +2,20 @@
 
 ## Overview
 
-アルコール計算機です。  
-This is an alcohol calculator.
+アルコール計算機です。飲酒量とアルコール量について下記の計算ができます。
+
+1. 飲酒量からアルコール量を計算する
+2. アルコール量から飲める量を計算する
+3. あとどれくらい飲めるか計算する
+4. 飲酒量とアルコール量のメモをとる
+
+This is an alcohol calculator.  
+The following calculations can be made for the amount of alcohol consumed and the amount of alcohol consumed.
+
+1. calculate the amount of alcohol from the amount of alcohol consumed
+2. calculate the amount of alcohol you can drink from the amount of alcohol you have consumed
+3. calculate how much more you can drink
+4. take a note of the amount of alcohol consumed and the amount of alcohol consumed
 
 ## Example
 
