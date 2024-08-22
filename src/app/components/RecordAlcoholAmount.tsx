@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect } from "react";
+import React, { useState, useEffect } from "react";
 
 type RecordAlcoholAmountProps = {
   volumes: number[];
@@ -36,6 +36,8 @@ const RecordAlcoholAmount: React.FC<RecordAlcoholAmountProps> = ({
   setShowRemainingResults,
   resetAll,
 }) => {
+  const [copiedText, setCopiedText] = useState("");
+
   useEffect(() => {
     // リセット後にプレースホルダーが確実に表示されるように状態を監視
   }, [drinkNames, notes, volumes, percentages, limitAlcohol]);
@@ -50,6 +52,32 @@ const RecordAlcoholAmount: React.FC<RecordAlcoholAmountProps> = ({
       ).toFixed(1);
       setShowRemainingResults(true);
     }
+  };
+
+  // メモのコピー関数
+  const handleCopy = () => {
+    const textToCopy = `摂取アルコール量: ${calculateAlcoholAmount()} g
+制限アルコール量: ${limitAlcohol} g
+制限に対する摂取アルコールの割合: ${(
+      (calculateAlcoholAmount() / limitAlcohol) *
+      100
+    ).toFixed(0)}%
+${volumes
+  .map((volume, index) =>
+    percentages[index] !== 0 && volume !== 0
+      ? `アルコール${index + 1}本目: ${drinkNames[index]} ${
+          percentages[index]
+        }% ${volume} ml ${notes[index]}\n`
+      : ""
+  )
+  .join("")}`;
+    navigator.clipboard
+      .writeText(textToCopy)
+      .then(() => {
+        setCopiedText("コピーしました!");
+        setTimeout(() => setCopiedText(""), 1500); // 1.5秒後にメッセージを消去
+      })
+      .catch((err) => console.error("コピーに失敗しました: ", err));
   };
 
   return (
@@ -193,6 +221,15 @@ const RecordAlcoholAmount: React.FC<RecordAlcoholAmountProps> = ({
                   )
               )}
             </div>
+            <button
+              onClick={handleCopy}
+              className="px-6 py-2 rounded mt-4 bg-blue-600 text-white font-semibold mr-4 shadow-md transition duration-300 ease-in-out transform hover:scale-105 hover:bg-blue-300 hover:text-blue-900"
+            >
+              テキストをコピー
+            </button>
+            {copiedText && (
+              <div className="mt-2 text-gray-500 ">{copiedText}</div>
+            )}
           </div>
         )}
       </div>
