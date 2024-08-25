@@ -132,7 +132,7 @@ ${volumes
               <option value="">-選択-</option>
               {percentages[index] &&
                 (percentages[index] <= 9
-                  ? [350, 500].map((size) => (
+                  ? [330, 350, 500, 630].map((size) => (
                       <option key={size} value={size}>
                         {size} ml
                       </option>
