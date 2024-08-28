@@ -180,7 +180,7 @@ const CalculateAlcohol: React.FC<CalculateAlcoholProps> = ({
               </tbody>
             </table>
             <p className="mt-4 text-xl font-semibold text-gray-900 text-center">
-              参考　リスクの高いアルコール量
+              参考　リスクの高いアルコール量　１日の量
             </p>
             <div className="mt-6">
               <table className="min-w-full table-auto">
@@ -208,6 +208,42 @@ const CalculateAlcohol: React.FC<CalculateAlcoholProps> = ({
                         </td>
                         <td className="border px-4 py-2 text-center text-gray-800">
                           {levels.female}g
+                        </td>
+                      </tr>
+                    )
+                  )}
+                </tbody>
+              </table>
+            </div>
+            <p className="mt-4 text-xl font-semibold text-gray-900 text-center">
+              参考　リスクの高いアルコール量　１週間の量
+            </p>
+            <div className="mt-6">
+              <table className="min-w-full table-auto">
+                <thead>
+                  <tr className="bg-gray-500 text-white">
+                    <th className="px-4 py-2 text-center">疾患</th>
+                    <th className="px-4 py-2 text-center">男性</th>
+                    <th className="px-4 py-2 text-center">女性</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {Object.entries(AlcoholRiskLevels).map(
+                    ([disease, levels], index) => (
+                      <tr
+                        key={index}
+                        className={`${
+                          index % 2 === 0 ? "bg-gray-100" : "bg-white"
+                        }`}
+                      >
+                        <td className="border px-4 py-2 text-center text-gray-800">
+                          {disease}
+                        </td>
+                        <td className="border px-4 py-2 text-center text-gray-800">
+                          {levels.male * 7}g
+                        </td>
+                        <td className="border px-4 py-2 text-center text-gray-800">
+                          {levels.female * 7}g
                         </td>
                       </tr>
                     )
