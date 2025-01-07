@@ -31,7 +31,6 @@ const AlcoholCalculator = () => {
   const [percentages, setPercentages] = useState<number[]>(
     new Array(5).fill(0)
   );
-  const [targetAlcohol, setTargetAlcohol] = useState<number>(0);
   const [limitAlcohol, setLimitAlcohol] = useState<number>(0);
   const [resultMessage, setResultMessage] = useState<string>("");
   const [showAmountResults, setShowAmountResults] = useState(false);
@@ -46,6 +45,7 @@ const AlcoholCalculator = () => {
   const [notes, setNotes] = useState<string[]>(
     new Array(volumes.length).fill("")
   );
+  const amountAlert = "制限アルコール量は1～80ｇの範囲で入力してください";
 
   const calculateAlcoholAmount = (): number => {
     return parseFloat(
@@ -59,7 +59,7 @@ const AlcoholCalculator = () => {
     );
   };
 
-  const calculateVolumesForTargetAlcohol = (): {
+  const calculateVolumesForLimitAlcohol = (): {
     percentage: number;
     volume: string;
   }[] => {
@@ -68,7 +68,7 @@ const AlcoholCalculator = () => {
       results.push({
         percentage: percentage,
         volume: (
-          targetAlcohol /
+          limitAlcohol /
           (percentage / 100) /
           ALCOHOL_COEFFICIENT
         ).toFixed(1),
@@ -118,7 +118,7 @@ const AlcoholCalculator = () => {
   const resetAllValues = () => {
     setVolumes(new Array(5).fill(0));
     setPercentages(new Array(5).fill(0));
-    setTargetAlcohol(0);
+    setLimitAlcohol(0);
     setLimitAlcohol(0);
     setResultMessage("");
     setShowAmountResults(false);
@@ -168,12 +168,12 @@ const AlcoholCalculator = () => {
       )}
       {calculationType === "type2" && (
         <CalculateAmount
-          targetAlcohol={targetAlcohol}
+          limitAlcohol={limitAlcohol}
           showAmountResults={showAmountResults}
-          ShowAlcoholPercentages={ShowAlcoholPercentages}
+          amountAlert={amountAlert}
           setShowAmountResults={setShowAmountResults}
-          setTargetAlcohol={setTargetAlcohol}
-          calculateVolumesForTargetAlcohol={calculateVolumesForTargetAlcohol}
+          setLimitAlcohol={setLimitAlcohol}
+          calculateVolumesForLimitAlcohol={calculateVolumesForLimitAlcohol}
           resetAll={resetAllValues}
         />
       )}
@@ -184,6 +184,7 @@ const AlcoholCalculator = () => {
           limitAlcohol={limitAlcohol}
           ShowAlcoholPercentages={ShowAlcoholPercentages}
           showRemainingResults={showRemainingResults}
+          amountAlert={amountAlert}
           setVolumes={setVolumes}
           setPercentages={setPercentages}
           setLimitAlcohol={setLimitAlcohol}

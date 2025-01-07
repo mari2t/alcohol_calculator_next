@@ -1,11 +1,13 @@
 "use client";
 import React from "react";
+import { useState } from "react";
 
 type CalculateRemainingProps = {
   volumes: number[];
   percentages: number[];
   limitAlcohol: number;
   ShowAlcoholPercentages: number[];
+  amountAlert: string;
   setVolumes: (volumes: number[]) => void;
   setPercentages: (percentages: number[]) => void;
   setLimitAlcohol: (value: number) => void;
@@ -26,6 +28,7 @@ const CalculateRemaining: React.FC<CalculateRemainingProps> = ({
   limitAlcohol,
   ShowAlcoholPercentages,
   showRemainingResults,
+  amountAlert,
   setVolumes,
   setPercentages,
   setLimitAlcohol,
@@ -35,10 +38,14 @@ const CalculateRemaining: React.FC<CalculateRemainingProps> = ({
   setShowRemainingResults,
   resetAll,
 }) => {
+  const [inputTargetAlcohol, setInputAlcohol] = useState<number>(0);
   const handleCalculate = () => {
-    if (limitAlcohol === 0) {
-      alert("制限アルコール量を入力してください");
+    if (inputTargetAlcohol === 0) {
+      alert("目標の制限アルコール量を入力してください");
+    } else if (inputTargetAlcohol < 1 || inputTargetAlcohol > 80) {
+      alert(amountAlert);
     } else {
+      setLimitAlcohol(inputTargetAlcohol);
       setShowRemainingResults(true);
     }
   };
@@ -100,11 +107,17 @@ const CalculateRemaining: React.FC<CalculateRemainingProps> = ({
         <h2 className="text-lg font-semibold mb-4 text-blue-800">
           制限アルコール量を入力してください:
         </h2>
+        <h3 className="text-base font-semibold mb-4 text-gray-500">
+          ※{amountAlert}
+        </h3>
         <input
           type="number"
-          placeholder="Limit Alcohol Amount"
-          value={limitAlcohol}
-          onChange={(e) => setLimitAlcohol(parseFloat(e.target.value))}
+          placeholder="0"
+          value={inputTargetAlcohol || ""} // NaN の場合は空文字列を表示
+          onChange={(e) => {
+            const value = e.target.value;
+            setInputAlcohol(value === "" ? 0 : parseFloat(value)); // 空文字の場合は 0 を設定
+          }}
           className="border p-2 w-24 rounded mr-2"
         />
         <span className="text-blue-700">g</span>
@@ -125,10 +138,13 @@ const CalculateRemaining: React.FC<CalculateRemainingProps> = ({
         {showRemainingResults && (
           <div className="mt-6">
             <p className="text-xl font-semibold text-blue-900">
-              摂取アルコール量…　{calculateAlcoholAmount()} g
+              制限アルコール量　{limitAlcohol} g
             </p>
             <p className="text-xl font-semibold text-blue-900">
-              制限アルコール量まであと…　{calculateRemainingAlcohol()} g
+              摂取アルコール量　{calculateAlcoholAmount()} g
+            </p>
+            <p className="text-xl font-semibold text-blue-900">
+              あと　{calculateRemainingAlcohol()} g
             </p>
           </div>
         )}
@@ -137,7 +153,7 @@ const CalculateRemaining: React.FC<CalculateRemainingProps> = ({
           calculateRemainingAlcohol() > 0.4 ? (
             <div className="mt-4">
               <h3 className="text-lg font-semibold text-blue-800">
-                あと飲めるの量は…
+                飲めるの量は…
               </h3>
               <div className="mt-4 overflow-x-auto">
                 <table className="min-w-full table-auto">
