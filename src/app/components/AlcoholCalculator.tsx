@@ -204,6 +204,7 @@ const AlcoholCalculator = () => {
           showRemainingResults={showRemainingResults}
           drinkNames={drinkNames}
           notes={notes}
+          amountAlert={amountAlert}
           setVolumes={setVolumes}
           setPercentages={setPercentages}
           setLimitAlcohol={setLimitAlcohol}

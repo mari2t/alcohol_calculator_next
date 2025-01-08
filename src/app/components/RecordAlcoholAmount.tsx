@@ -8,6 +8,7 @@ type RecordAlcoholAmountProps = {
   ShowAlcoholPercentages: number[];
   drinkNames: string[];
   notes: string[];
+  amountAlert: string;
   setVolumes: (volumes: number[]) => void;
   setPercentages: (percentages: number[]) => void;
   setDrinkNames: (drinkNames: string[]) => void;
@@ -27,6 +28,7 @@ const RecordAlcoholAmount: React.FC<RecordAlcoholAmountProps> = ({
   notes,
   ShowAlcoholPercentages,
   showRemainingResults,
+  amountAlert,
   setVolumes,
   setPercentages,
   setDrinkNames,
@@ -37,14 +39,18 @@ const RecordAlcoholAmount: React.FC<RecordAlcoholAmountProps> = ({
   resetAll,
 }) => {
   const [copiedText, setCopiedText] = useState("");
+  const [inputTargetAlcohol, setInputAlcohol] = useState<number>(0);
 
   useEffect(() => {
     // リセット後にプレースホルダーが確実に表示されるように状態を監視
   }, [drinkNames, notes, volumes, percentages, limitAlcohol]);
   const handleCalculate = () => {
-    if (limitAlcohol === 0) {
-      alert("制限アルコール量を入力してください");
+    if (inputTargetAlcohol === 0) {
+      alert("目標の制限アルコール量を入力してください");
+    } else if (inputTargetAlcohol < 1 || inputTargetAlcohol > 80) {
+      alert(amountAlert);
     } else {
+      setLimitAlcohol(inputTargetAlcohol);
       const totalAlcohol = calculateAlcoholAmount();
       const consumptionPercentage = (
         (totalAlcohol / limitAlcohol) *
@@ -161,12 +167,18 @@ ${volumes
         <h2 className="text-lg sm:text-xl font-semibold mb-4 text-blue-800">
           制限アルコール量を入力してください:
         </h2>
+        <h3 className="text-base font-semibold mb-4 text-gray-500">
+          ※{amountAlert}
+        </h3>
         <div className="flex items-center">
           <input
             type="number"
-            placeholder="Limit Alcohol Amount"
-            value={limitAlcohol}
-            onChange={(e) => setLimitAlcohol(parseFloat(e.target.value))}
+            placeholder="0"
+            value={inputTargetAlcohol || ""} // NaN の場合は空文字列を表示
+            onChange={(e) => {
+              const value = e.target.value;
+              setInputAlcohol(value === "" ? 0 : parseFloat(value)); // 空文字の場合は 0 を設定
+            }}
             className="border p-2 w-full sm:w-24 rounded mr-2"
           />
           <span className="text-blue-700">g</span>
