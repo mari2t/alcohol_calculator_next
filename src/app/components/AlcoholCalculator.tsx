@@ -17,7 +17,7 @@ type RiskResult = {
 
 // 定数定義
 const ALCOHOL_COEFFICIENT = 0.8;
-const ShowAlcoholPercentages = [3, 4, 5, 6, 7, 9, 11, 12, 15, 20, 25, 32, 37, 40];
+const ShowAlcoholPercentages = [3, 4, 5, 6, 7, 9, 11, 12, 15, 20, 25, 32, 37, 40, 50];
 const AlcoholRiskLevels: RiskLevels = {
   生活習慣病: { male: 40, female: 20 },
   "脳卒中（脳梗塞）": { male: 40, female: 11 },
@@ -89,16 +89,23 @@ const AlcoholCalculator = () => {
   }[] => {
     const remainingAlcohol = calculateRemainingAlcohol();
     const results = [];
-    for (const percentage of ShowAlcoholPercentages) {
-      results.push({
-        percentage: percentage,
-        volume: (
-          remainingAlcohol /
-          (percentage / 100) /
-          ALCOHOL_COEFFICIENT
-        ).toFixed(1),
-      });
-    }
+      for (const percentage of ShowAlcoholPercentages) {
+        if (percentage === 0) {
+          results.push({
+            percentage: 0,
+            volume: "0",
+          });
+          continue;
+        }
+        results.push({
+          percentage: percentage,
+          volume: (
+            limitAlcohol /
+            (percentage / 100) /
+            ALCOHOL_COEFFICIENT
+          ).toFixed(1),
+        });
+      }
     return results;
   };
 
