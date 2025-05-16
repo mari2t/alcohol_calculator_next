@@ -17,7 +17,7 @@ type RiskResult = {
 
 // 定数定義
 const ALCOHOL_COEFFICIENT = 0.8;
-const ShowAlcoholPercentages = [3, 4, 5, 6, 7, 9, 11, 12, 15, 20, 25, 32, 37, 40, 50];
+const ShowAlcoholPercentages = [3, 4, 5, 6, 7, 8, 9, 11, 12, 15, 20, 25, 32, 37, 40, 50];
 const AlcoholRiskLevels: RiskLevels = {
   生活習慣病: { male: 40, female: 20 },
   "脳卒中（脳梗塞）": { male: 40, female: 11 },
