@@ -88,7 +88,7 @@ const CalculateRemaining: React.FC<CalculateRemainingProps> = ({
               <option value="">-選択-</option>
               {percentages[index] &&
                 (percentages[index] <= 9
-                  ? [330, 350, 500, 630].map((size) => (
+                  ? [200, 330, 350, 500, 630].map((size) => (
                       <option key={size} value={size}>
                         {size} ml
                       </option>
