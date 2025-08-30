@@ -92,14 +92,15 @@ ${volumes
         <h2 className="text-lg sm:text-xl font-semibold mb-4 text-blue-800">
           アルコール度数、飲酒量を入力してください:
         </h2>
-        {volumes.map((volume, index) => (
+        {volumes.map((volume, index) => (<>
+          <span className="text-blue-700 m-2">{`アルコール${index + 1}本目`}</span>
           <div
             key={index}
-            className="mb-4 flex flex-col sm:flex-row items-center mt-10 border border-gray-300 p-4 rounded-lg"
+            className="mb-4 flex flex-col sm:flex-row items-center mt-4 border border-gray-300 p-4 rounded-lg"
           >
             <input
               type="text"
-              placeholder={`アルコール${index + 1}本目　名前`}
+              placeholder={`名前`}
               value={drinkNames[index] || ""}
               onChange={(e) => {
                 const newDrinkNames = [...drinkNames];
@@ -108,7 +109,7 @@ ${volumes
               }}
               className="border p-2 mb-2 sm:mb-0 sm:mr-2 w-full sm:w-48 rounded"
             />
-            <span className="text-blue-700 mr-2">アルコール度数</span>
+            <span className="text-blue-700 mr-2">度数</span>
             <select
               value={percentages[index]}
               onChange={(e) => {
@@ -153,7 +154,7 @@ ${volumes
             </select>
             <input
               type="text"
-              placeholder="備考"
+              placeholder="メモ"
               value={notes[index] || ""}
               onChange={(e) => {
                 const newNotes = [...notes];
@@ -162,7 +163,7 @@ ${volumes
               }}
               className="border p-2 w-full sm:w-48 rounded"
             />
-          </div>
+          </div></>
         ))}
         <h2 className="text-lg sm:text-xl font-semibold mb-4 text-blue-800">
           制限アルコール量を入力してください:
