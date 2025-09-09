@@ -100,7 +100,7 @@ const AlcoholCalculator = () => {
         results.push({
           percentage: percentage,
           volume: (
-            limitAlcohol /
+             remainingAlcohol / 
             (percentage / 100) /
             ALCOHOL_COEFFICIENT
           ).toFixed(1),

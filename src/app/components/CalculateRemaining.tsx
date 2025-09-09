@@ -153,7 +153,7 @@ const CalculateRemaining: React.FC<CalculateRemainingProps> = ({
           calculateRemainingAlcohol() > 0.4 ? (
             <div className="mt-4">
               <h3 className="text-lg font-semibold text-blue-800">
-                飲めるの量は…
+                飲める量は…
               </h3>
               <div className="mt-4 overflow-x-auto">
                 <table className="min-w-full table-auto">
