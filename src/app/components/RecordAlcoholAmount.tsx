@@ -144,7 +144,7 @@ ${volumes
                         {size} ml
                       </option>
                     ))
-                  : Array.from({ length: 10 }, (_, i) => 20 * (i + 1)).map(
+                  : Array.from({ length: 16 }, (_, i) => 10 * (i + 1)).map(
                       (size) => (
                         <option key={size} value={size}>
                           {size} ml
